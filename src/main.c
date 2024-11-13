@@ -1,4 +1,5 @@
 #include <stdio.h>
+#include <stdlib.h>
 
 
 int mainMenu() {
@@ -18,7 +19,8 @@ int mainMenu() {
             printf("TODO saved games menu");
             break;
         case 3:
-            printf("TODO Exiting");
+            printf("See you again!");
+            return EXIT_SUCCESS;
             break;
         default:
             printf("Some error occurred");

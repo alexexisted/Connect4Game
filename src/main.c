@@ -7,45 +7,45 @@
 char globalPlayer1[20];
 char globalPlayer2[20];
 
-bool isNameValid(char name) {
+bool isNameValid(const char *name) {
     const size_t nameLen = strlen(name);
-    switch (nameLen) {
-        case 0:
-            return false;
-            break;
-
-        default:
-            return true;
-            break;
-    }
+    return nameLen > 0 && name[0] != '\n';
 }
 
 void getPlayer2() {
     printf("Enter the name of the Player2\n");
-    scanf("%s", &globalPlayer2);
-    if (isNameValid(globalPlayer2) == true) {
-        printf("Nice name");
-    } else {
-        printf("Incorrect name, try again");
-        getPlayer2();
+    scanf("%19s", globalPlayer2);
+    bool isValid = isNameValid(globalPlayer2);
+    switch (isValid) {
+        case true:
+            printf("Nice names\n");
+            printf("%s\n%s", globalPlayer1, globalPlayer2);
+            break;
+        default:
+            printf("Incorrect name, try again\n");
+            getPlayer2();
     }
 }
 
 void getPlayer1() {
     printf("Enter the name of the Player1\n");
-    scanf("%s", &globalPlayer1);
-    if (isNameValid(globalPlayer1) == true) {
-        getPlayer2();
-    } else {
-        printf("Incorrect name, try again");
-        getPlayer1();
+    scanf("%19s", globalPlayer1);
+    bool isValid = isNameValid(globalPlayer1);
+    switch (isValid) {
+        case true:
+            getPlayer2();
+            break;
+
+        default:
+            printf("Incorrect name, try again\n");
+            getPlayer1();
     }
 }
 
 int mainMenu() {
     printf("1 - Play new game\n2 - Load saved game\n3 - Exit the game\n");
     int mainOption;
-    scanf("%d", &mainOption);
+    scanf("%1d", &mainOption);
 
     switch (mainOption) {
         case 0:

@@ -5,36 +5,79 @@
 #define MAX_NAME_LENGTH 20
 #define FIELD_WIDTH 7
 #define FIELD_HEIGHT 6
+#define WINNING_COUNT 4
 
 char globalPlayer1[20];
 char globalPlayer2[20];
 char gameField[FIELD_HEIGHT][FIELD_WIDTH];
 
 
-bool placePiece(int column, char piece) {
-    // Place piece in the lowest available cell in the specified column
+bool checkDirection(int row, int col, int rowDir, int colDir, char piece) {
+    int count = 0;
+
+    for (int i = 0; i < WINNING_COUNT; i++) {
+        int newRow = row + i * rowDir;
+        int newCol = col + i * colDir;
+
+        // Ensure we’re within bounds and that the cell contains the player's piece
+        if (newRow >= 0 && newRow < FIELD_HEIGHT &&
+            newCol >= 0 && newCol < FIELD_WIDTH &&
+            gameField[newRow][newCol] == piece) {
+            count++;
+            } else {
+                break;
+            }
+    }
+
+    return count == WINNING_COUNT;
+}
+
+bool checkWin(char piece) {
+    // Iterate over each cell on the board
+    for (int row = 0; row < FIELD_HEIGHT; row++) {
+        for (int col = 0; col < FIELD_WIDTH; col++) {
+            // Check for a win only if the cell has the player's piece
+            if (gameField[row][col] == piece) {
+                // Check all directions: horizontal, vertical, diagonal (2 ways)
+                if (checkDirection(row, col, 0, 1, piece) ||    // Horizontal
+                    checkDirection(row, col, 1, 0, piece) ||    // Vertical
+                    checkDirection(row, col, 1, 1, piece) ||    // Diagonal down-right
+                    checkDirection(row, col, 1, -1, piece)) {   // Diagonal down-left
+                    return true;  // Win found
+                    }
+            }
+        }
+    }
+
+    return false;  // No win found
+}
+
+bool placeUsersMove(int column, char usersMove) {
     for (int i = FIELD_HEIGHT - 1; i >= 0; i--) {
-        if (gameField[i][column] == ' ') {
-            gameField[i][column] = piece;
-            return true; // Placement successful
+        if (gameField[i][column] == ' ') { //check if cell is empty
+            gameField[i][column] = usersMove; //rewrite the array with user's sign
+            return true;
         }
     }
     printf("Column %d is full! Choose another column.\n", column + 1);
-    return false; // Placement failed
+    return false;
 }
 
-void playerTurn(char *playerName, char piece) {
+void playerTurn(char *playerName, const char users_move) {
     int column;
     bool validMove = false;
 
     while (!validMove) {
         printf("%s, your turn. Enter a column (1-%d): ", playerName, FIELD_WIDTH);
         scanf("%d", &column);
+        // if (checkWin("X") || checkWin("0")) {
+        //     printf("You won!");
+        //     validMove = false;
+        // }
 
-        // Adjust for 0-based indexing and validate input
         if (column >= 1 && column <= FIELD_WIDTH) {
-            validMove = placePiece(column - 1, piece);
-        } else {
+            validMove = placeUsersMove(column - 1, users_move);
+        } else { //TODO if 0 then save
             printf("Invalid column. Please choose a column between 1 and %d.\n", FIELD_WIDTH);
         }
     }
@@ -79,13 +122,12 @@ void getPlayer2() {
             initializeField();
             displayField();
             while (true) { //TODO need to create method to check if win to avoid endless loop
-                playerTurn(globalPlayer1, 'X'); // Player 1's turn
+                playerTurn(globalPlayer1, 'X');
                 displayField();
 
-                playerTurn(globalPlayer2, 'O'); // Player 2's turn
+                playerTurn(globalPlayer2, 'O');
                 displayField();
             }
-            break;
         default:
             printf("Incorrect name, try again\n");
             getPlayer2();
@@ -118,7 +160,6 @@ int mainMenu() {
             mainMenu();
             break;
         case 1:
-            printf("TODO Starting new game...\n");
             getPlayer1();
             break;
         case 2:

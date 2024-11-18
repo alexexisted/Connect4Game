@@ -12,6 +12,11 @@ char globalPlayer2[MAX_NAME_LENGTH];
 char gameField[FIELD_HEIGHT][FIELD_WIDTH];
 int gameID = 1; // Unique ID for each saved game
 
+void mainMenu();
+void startGameLoop();
+void promptForNewGame();
+
+
 // Initialize the field with empty spaces
 void initializeField() {
     for (int i = 0; i < FIELD_HEIGHT; i++) {
@@ -149,6 +154,21 @@ bool placeUsersMove(int column, char usersMove) {
     return false;
 }
 
+void promptForNewGame() {
+    int choice;
+    printf("\nGame Over! Would you like to:\n");
+    printf("1 - Start a new game\n");
+    printf("2 - Return to main menu\n");
+    printf("Enter your choice: ");
+    scanf("%d", &choice);
+
+    if (choice == 1) {
+        startGameLoop();
+    } else {
+        mainMenu();
+    }
+}
+
 // Handle the player's turn
 void playerTurn(char *playerName, char usersMove) {
     int column;
@@ -169,12 +189,13 @@ void playerTurn(char *playerName, char usersMove) {
                 if (checkWinAndHighlight(usersMove)) {
                     displayField();
                     printf("%s wins!\n", playerName);
-                    exit(0); // End the game if there's a winner
+                    promptForNewGame();
+                    ; // End the game if there's a winner
                 }
                 if (isBoardFull()) {
                     displayField();
                     printf("The board is full! It's a tie.\n");
-                    exit(0); // End the game if it's a tie
+                    promptForNewGame();
                 }
             }
         } else {

@@ -13,8 +13,13 @@ char gameField[FIELD_HEIGHT][FIELD_WIDTH];
 int gameID = 1; // Unique ID for each saved game
 
 void mainMenu();
+
 void startGameLoop();
+
 void promptForNewGame();
+
+//TODO check input type to avoid inf. cycle
+//TODO fix saving
 
 
 // Initialize the field with empty spaces
@@ -189,8 +194,7 @@ void playerTurn(char *playerName, char usersMove) {
                 if (checkWinAndHighlight(usersMove)) {
                     displayField();
                     printf("%s wins!\n", playerName);
-                    promptForNewGame();
-                    ; // End the game if there's a winner
+                    promptForNewGame();; // End the game if there's a winner
                 }
                 if (isBoardFull()) {
                     displayField();

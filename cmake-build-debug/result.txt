@@ -6,3 +6,20 @@ Y
 Y      
 YOO O  
 
+Game ID: 2, Player 1: serg, Player 2: awertgh
+       
+       
+       
+O O    
+XXXO
+XOOX  X
+
+
+Game ID: 3, Player 1: hello_world, Player 2: jopa
+       
+       
+  X    
+  O X  
+  O X  
+OXXOOOX
+

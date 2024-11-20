@@ -4,23 +4,9 @@
 
 #include "utils_logic.h"
 
-int getNextUniqueID() {
-    FILE *file = fopen(FILENAME, "r");
-    if (!file) return 1; // If file doesn't exist, start from ID 1
+#include <stdio.h>
 
-    int maxID = 0, currentID;
-    while (fscanf(file, "Game ID: %d,", &currentID) == 1) {
-        if (currentID > maxID) {
-            maxID = currentID;
-        }
-        // Skip the rest of the line
-        char buffer[100];
-        fgets(buffer, sizeof(buffer), file);
-    }
-
-    fclose(file);
-    return maxID + 1;
-}
+#include "game_logic.h"
 
 // Check if the board is full
 bool isBoardFull() {
@@ -42,24 +28,6 @@ bool placeUsersMove(int column, char usersMove) {
     }
     printf("Column %d is full! Choose another column.\n", column + 1);
     return false;
-}
-
-// Main game loop to handle turns
-void startGameLoop() {
-    if (!isResumingSavedGame) {  // Initialize only for new games
-        initializeField();
-    }
-    isResumingSavedGame = false;  // Reset flag after the first use
-
-    displayField();
-
-    while (true) {
-        playerTurn(globalPlayer1, 'X');  // Player 1's turn
-        displayField();
-
-        playerTurn(globalPlayer2, 'O');  // Player 2's turn
-        displayField();
-    }
 }
 
 // Input and validation for player names

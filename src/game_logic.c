@@ -6,6 +6,10 @@
 #include <stdbool.h>
 #include <string.h>
 
+#include "db_logic.h"
+#include "navigation_logic.h"
+#include "utils_logic.h"
+
 // Global variables specific to game logic
 char gameField[FIELD_HEIGHT][FIELD_WIDTH];
 char globalPlayer1[MAX_NAME_LENGTH];
@@ -119,5 +123,22 @@ void playerTurn(char *playerName, char usersMove) {
         } else {
             printf("Invalid column. Please choose a column between 1 and %d.\n", FIELD_WIDTH);
         }
+    }
+}
+// Main game loop to handle turns
+void startGameLoop() {
+    if (!isResumingSavedGame) {  // Initialize only for new games
+        initializeField();
+    }
+    isResumingSavedGame = false;  // Reset flag after the first use
+
+    displayField();
+
+    while (true) {
+        playerTurn(globalPlayer1, 'X');  // Player 1's turn
+        displayField();
+
+        playerTurn(globalPlayer2, 'O');  // Player 2's turn
+        displayField();
     }
 }

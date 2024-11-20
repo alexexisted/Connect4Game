@@ -6,7 +6,28 @@
 
 #include <stdio.h>
 #include <string.h>
+
+#include "game_logic.h"
 #define FILENAME "result.txt"
+int gameID;
+
+int getNextUniqueID() {
+    FILE *file = fopen(FILENAME, "r");
+    if (!file) return 1; // If file doesn't exist, start from ID 1
+
+    int maxID = 0, currentID;
+    while (fscanf(file, "Game ID: %d,", &currentID) == 1) {
+        if (currentID > maxID) {
+            maxID = currentID;
+        }
+        // Skip the rest of the line
+        char buffer[100];
+        fgets(buffer, sizeof(buffer), file);
+    }
+
+    fclose(file);
+    return maxID + 1;
+}
 
 void loadSavedGame() {
     printf("Enter game ID: ");

@@ -6,6 +6,9 @@
 
 #include <stdio.h>
 
+#include "db_logic.h"
+#include "utils_logic.h"
+
 // Main menu and additional options
 void mainMenu() {
     int mainOption;
@@ -16,14 +19,14 @@ void mainMenu() {
         switch (mainOption) {
             case 1:
                 getPlayerNames();
-            startGameLoop();
-            break;
+                startGameLoop();
+                break;
             case 2:
                 listGamesClicked();
-            break;
+                break;
             case 3:
                 printf("See you again!");
-            return;
+                return;
             default:
                 printf("Enter a valid option (1, 2, or 3).\n");
         }
@@ -58,25 +61,25 @@ void listGamesClicked() {
     switch (option) {
         case 1:
             listAllSavedGames();
-        listGamesClicked();
-        break;
+            listGamesClicked();
+            break;
         case 2:
             listGamesByPlayer();
-        listGamesClicked();
-        break;
+            listGamesClicked();
+            break;
         case 3:
             showSavedGameBoard();
-        listGamesClicked();
-        break;
+            listGamesClicked();
+            break;
         case 4:
             loadSavedGame();
-        break;
+            break;
         case 5:
             mainMenu();
-        break;
+            break;
         default:
             printf("Enter valid value 1-5");
-        listGamesClicked();
-        break;
+            listGamesClicked();
+            break;
     }
 }

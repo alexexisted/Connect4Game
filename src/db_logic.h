@@ -16,5 +16,6 @@ void listAllSavedGames();
 void loadSavedGame();
 void showSavedGameBoard();
 void listGamesByPlayer();
+void startGameLoop();
 
 #endif //DB_LOGIC_H

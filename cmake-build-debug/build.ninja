@@ -55,6 +55,12 @@ build CMakeFiles/Connect4Game.dir/src/main.c.o: C_COMPILER__Connect4Game_unscann
   OBJECT_DIR = CMakeFiles/Connect4Game.dir
   OBJECT_FILE_DIR = CMakeFiles/Connect4Game.dir/src
 
+build CMakeFiles/Connect4Game.dir/src/game_logic.c.o: C_COMPILER__Connect4Game_unscanned_Debug /Users/alexag/CLionProjects/Connect4Game/src/game_logic.c || cmake_object_order_depends_target_Connect4Game
+  DEP_FILE = CMakeFiles/Connect4Game.dir/src/game_logic.c.o.d
+  FLAGS = -g -std=gnu2x -isysroot /Applications/Xcode.app/Contents/Developer/Platforms/MacOSX.platform/Developer/SDKs/MacOSX14.2.sdk -mmacosx-version-min=13.7 -fcolor-diagnostics
+  OBJECT_DIR = CMakeFiles/Connect4Game.dir
+  OBJECT_FILE_DIR = CMakeFiles/Connect4Game.dir/src
+
 
 # =============================================================================
 # Link build statements for EXECUTABLE target Connect4Game
@@ -63,7 +69,7 @@ build CMakeFiles/Connect4Game.dir/src/main.c.o: C_COMPILER__Connect4Game_unscann
 #############################################
 # Link the executable Connect4Game
 
-build Connect4Game: C_EXECUTABLE_LINKER__Connect4Game_Debug CMakeFiles/Connect4Game.dir/src/main.c.o
+build Connect4Game: C_EXECUTABLE_LINKER__Connect4Game_Debug CMakeFiles/Connect4Game.dir/src/main.c.o CMakeFiles/Connect4Game.dir/src/game_logic.c.o
   FLAGS = -g -isysroot /Applications/Xcode.app/Contents/Developer/Platforms/MacOSX.platform/Developer/SDKs/MacOSX14.2.sdk -mmacosx-version-min=13.7
   OBJECT_DIR = CMakeFiles/Connect4Game.dir
   POST_BUILD = :

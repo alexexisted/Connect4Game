@@ -7,10 +7,11 @@
 #include <stdio.h>
 
 #include "db_logic.h"
+#include "game_state.h"
 #include "utils_logic.h"
 
 // Main menu and additional options
-void mainMenu() {
+void mainMenu(GameState *state) {
     int mainOption;
     while (true) {
         printf("1 - Play new game\n2 - Load already saved game\n3 - Exit the game\n");
@@ -18,11 +19,11 @@ void mainMenu() {
 
         switch (mainOption) {
             case 1:
-                getPlayerNames();
-                startGameLoop();
+                getPlayerNames(state);
+                startGameLoop(state);
                 break;
             case 2:
-                listGamesClicked();
+                listGamesClicked(state);
                 break;
             case 3:
                 printf("See you again!");
@@ -33,7 +34,7 @@ void mainMenu() {
     }
 }
 
-void promptForNewGame() {
+void promptForNewGame(GameState *state) {
     int choice;
     printf("\nGame Over! Would you like to:\n");
     printf("1 - Start a new game\n");
@@ -42,13 +43,13 @@ void promptForNewGame() {
     scanf("%d", &choice);
 
     if (choice == 1) {
-        startGameLoop();
+        startGameLoop(state);
     } else {
-        mainMenu();
+        mainMenu(state);
     }
 }
 
-void listGamesClicked() {
+void listGamesClicked(GameState *state) {
     printf("1 - List all saved games\n");
     printf("2 - List all saved games for a particular player\n");
     printf("3 - Show the board of one of the saved games\n");
@@ -61,25 +62,25 @@ void listGamesClicked() {
     switch (option) {
         case 1:
             listAllSavedGames();
-            listGamesClicked();
+            listGamesClicked(state);
             break;
         case 2:
             listGamesByPlayer();
-            listGamesClicked();
+            listGamesClicked(state);
             break;
         case 3:
             showSavedGameBoard();
-            listGamesClicked();
+            listGamesClicked(state);
             break;
         case 4:
-            loadSavedGame();
+            loadSavedGame(state);
             break;
         case 5:
-            mainMenu();
+            mainMenu(state);
             break;
         default:
             printf("Enter valid value 1-5");
-            listGamesClicked();
+            listGamesClicked(state);
             break;
     }
 }

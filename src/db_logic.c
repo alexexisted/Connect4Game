@@ -8,6 +8,7 @@
 #include <string.h>
 
 #include "game_logic.h"
+#include "game_state.h"
 #define FILENAME "result.txt"
 int gameID;
 
@@ -29,7 +30,7 @@ int getNextUniqueID() {
     return maxID + 1;
 }
 
-void loadSavedGame() {
+void loadSavedGame(GameState *state) {
     printf("Enter game ID: ");
     int id;
     scanf("%d", &id);
@@ -46,7 +47,7 @@ void loadSavedGame() {
     while (fgets(line, sizeof(line), file)) {
         if (strstr(line, "Game ID:")) {
             int currentID;
-            sscanf(line, "Game ID: %d, Player 1: %s, Player 2: %s", &currentID, globalPlayer1, globalPlayer2);
+            sscanf(line, "Game ID: %d, Player 1: %s, Player 2: %s", &currentID, state->globalPlayer1, state->globalPlayer2);
             if (currentID == id) {
                 gameFound = true;
 
@@ -54,17 +55,17 @@ void loadSavedGame() {
                 for (int i = 0; i < FIELD_HEIGHT; i++) {
                     if (fgets(line, sizeof(line), file)) {
                         for (int j = 0; j < FIELD_WIDTH; j++) {
-                            gameField[i][j] = line[j];  // Copy characters into gameField
+                            state->gameField[i][j] = line[j];  // Copy characters into gameField
                         }
                     }
                 }
 
                 printf("Game loaded successfully!\n");
-                printf("Player 1: %s, Player 2: %s\n", globalPlayer1, globalPlayer2);
-                displayField();  // Show the loaded game board
+                printf("Player 1: %s, Player 2: %s\n", state->globalPlayer1, state->globalPlayer2);
+                displayField(state);  // Show the loaded game board
 
-                isResumingSavedGame = true;  // Set the flag to prevent reinitialization
-                startGameLoop();  // Start the game from the loaded state
+                state->isResumingSavedGame = true;  // Set the flag to prevent reinitialization
+                startGameLoop(state);  // Start the game from the loaded state
                 break;
             }
         }
@@ -78,7 +79,7 @@ void loadSavedGame() {
 }
 
 // Save the current game state to a file
-void saveGame() {
+void saveGame(GameState *state) {
     gameID = getNextUniqueID(); // Get the next unique ID
 
     FILE *file = fopen(FILENAME, "a");
@@ -87,10 +88,10 @@ void saveGame() {
         return;
     }
 
-    fprintf(file, "Game ID: %d, Player 1: %s, Player 2: %s\n", gameID, globalPlayer1, globalPlayer2);
+    fprintf(file, "Game ID: %d, Player 1: %s, Player 2: %s\n", gameID, state->globalPlayer1, state->globalPlayer2);
     for (int i = 0; i < FIELD_HEIGHT; i++) {
         for (int j = 0; j < FIELD_WIDTH; j++) {
-            fprintf(file, "%c", gameField[i][j]);
+            fprintf(file, "%c", state->gameField[i][j]);
         }
         fprintf(file, "\n");
     }

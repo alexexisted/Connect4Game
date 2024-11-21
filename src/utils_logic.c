@@ -5,13 +5,12 @@
 #include "utils_logic.h"
 
 #include <stdio.h>
-
-#include "game_logic.h"
+#include "game_state.h"
 
 // Check if the board is full
-bool isBoardFull() {
+bool isBoardFull(GameState *state) {
     for (int col = 0; col < FIELD_WIDTH; col++) {
-        if (gameField[0][col] == ' ') {
+        if (state->gameField[0][col] == ' ') {
             return false;
         }
     }
@@ -19,10 +18,10 @@ bool isBoardFull() {
 }
 
 // Place the user's move in the specified column
-bool placeUsersMove(int column, char usersMove) {
+bool placeUsersMove(int column, char usersMove, GameState *state) {
     for (int i = FIELD_HEIGHT - 1; i >= 0; i--) {
-        if (gameField[i][column] == ' ') {
-            gameField[i][column] = usersMove;
+        if (state->gameField[i][column] == ' ') {
+            state->gameField[i][column] = usersMove;
             return true;
         }
     }
@@ -31,10 +30,10 @@ bool placeUsersMove(int column, char usersMove) {
 }
 
 // Input and validation for player names
-void getPlayerNames() {
+void getPlayerNames(GameState *state) {
     printf("Enter the name of Player 1 (X): ");
-    scanf("%19s", globalPlayer1);
+    scanf("%19s", state->globalPlayer1);
 
     printf("Enter the name of Player 2 (O): ");
-    scanf("%19s", globalPlayer2);
+    scanf("%19s", state->globalPlayer2);
 }

@@ -11,4 +11,5 @@ add_executable(Connect4Game src/main.c
         src/navigation_logic.c
         src/navigation_logic.h
         src/utils_logic.c
-        src/utils_logic.h)
+        src/utils_logic.h
+        src/game_state.h)

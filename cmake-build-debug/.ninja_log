@@ -1,3 +1,9 @@
 # ninja log v6
 191	315	1732102265622421508	Connect4Game	9a1cc7d067002315
 7	190	1732102265438836247	CMakeFiles/Connect4Game.dir/src/main.c.o	e66af30a0282594a
+5	299	1732219458857527781	CMakeFiles/Connect4Game.dir/src/main.c.o	e66af30a0282594a
+6	318	1732219458858744615	CMakeFiles/Connect4Game.dir/src/game_logic.c.o	72c45c31d646332
+8	328	1732219458860515691	CMakeFiles/Connect4Game.dir/src/db_logic.c.o	4c681e8c0e4b939c
+318	405	1732219459170517995	CMakeFiles/Connect4Game.dir/src/utils_logic.c.o	63109a3cc165963a
+2	202	1732219470844501213	CMakeFiles/Connect4Game.dir/src/navigation_logic.c.o	40a205ff56e0846b
+202	3234	1732219471044814941	Connect4Game	f17fe314644515a

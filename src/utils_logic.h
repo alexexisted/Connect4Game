@@ -6,6 +6,7 @@
 #define UTILS_LOGIC_H
 #include "game_state.h"
 
+void clearInputBuffer();
 bool isBoardFull(GameState *state);
 bool placeUsersMove(int column, char usersMove, GameState *state);
 void getPlayerNames(GameState *state);

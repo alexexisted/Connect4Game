@@ -16,4 +16,4 @@ void showSavedGameBoard();
 void listGamesByPlayer();
 void startGameLoop(GameState *state);
 
-#endif //DB_LOGIC_H
+#endif

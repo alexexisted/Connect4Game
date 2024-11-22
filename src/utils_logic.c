@@ -5,7 +5,14 @@
 #include "utils_logic.h"
 
 #include <stdio.h>
+#include <string.h>
+
 #include "game_state.h"
+
+void clearInputBuffer() {
+    int c;
+    while ((c = getchar()) != '\n' && c != EOF);
+}
 
 // Check if the board is full
 bool isBoardFull(GameState *state) {
@@ -31,9 +38,13 @@ bool placeUsersMove(int column, char usersMove, GameState *state) {
 
 // Input and validation for player names
 void getPlayerNames(GameState *state) {
+    clearInputBuffer(); // Clear any leftover input
+
     printf("Enter the name of Player 1 (X): ");
-    scanf("%19s", state->globalPlayer1);
+    fgets(state->globalPlayer1, MAX_NAME_LENGTH, stdin);
+    state->globalPlayer1[strcspn(state->globalPlayer1, "\n")] = '\0'; // Remove newline
 
     printf("Enter the name of Player 2 (O): ");
-    scanf("%19s", state->globalPlayer2);
+    fgets(state->globalPlayer2, MAX_NAME_LENGTH, stdin);
+    state->globalPlayer2[strcspn(state->globalPlayer2, "\n")] = '\0'; // Remove newline
 }

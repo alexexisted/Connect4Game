@@ -1,25 +1,10 @@
-Game ID: 1, Player 1: erty, Player 2: asdfghj
-       
-       
-Y      
-Y      
-Y      
-YOO O  
-
-Game ID: 2, Player 1: serg, Player 2: awertgh
-       
-       
-       
-O O    
-XXXO
-XOOX  X
 
 
-Game ID: 3, Player 1: hello_world, Player 2: jopa
+Game ID: 1, Player 1: ert reterge, Player 2: wefwefwf
        
        
-  X    
-  O X  
-  O X  
-OXXOOOX
+ X     
+OXO    
+XXO    
+XOOX   
 

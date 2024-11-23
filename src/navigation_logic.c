@@ -14,18 +14,20 @@
 #include "utils_logic.h"
 
 
-// Main menu and additional options
+//main menu
 void mainMenu(GameState *state) {
     while (true) {
+        //movements to avoid endless loop if user enter string
         char tempOption[10];
         printf("1 - Play new game\n2 - Load already saved game\n3 - Exit the game\n");
 
-        // Read user input as a string
+        //read user's input as a string
         scanf("%9s", tempOption);
 
-        // Validate input: Check if it's a single-digit number
+        //check if it is a single digit number
         if (strlen(tempOption) == 1 && isdigit(tempOption[0])) {
-            int mainOption = atoi(tempOption); // Convert input to integer
+            //convert input to integer
+            const int mainOption = atoi(tempOption);
 
             switch (mainOption) {
                 case 1:
@@ -42,7 +44,7 @@ void mainMenu(GameState *state) {
                     printf("Enter a valid option (1, 2, or 3).\n");
             }
         } else {
-            // Input is invalid (e.g., not a digit or longer than 1 character)
+            //input is invalid like not a digit or longer than 1 character
             printf("Invalid input. Please enter a number (1, 2, or 3).\n");
         }
     }

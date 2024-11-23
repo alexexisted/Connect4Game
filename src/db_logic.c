@@ -79,10 +79,11 @@ void loadSavedGame(GameState *state) {
     fclose(file);
 }
 
-// Save the current game state to a file
+//save the current game state to a file
 void saveGame(GameState *state) {
-    state->gameID = getNextUniqueID(); // Get the next unique ID
-
+    //get the next unique id
+    state->gameID = getNextUniqueID();
+    //open a file
     FILE *file = fopen(FILENAME, "a");
     if (!file) {
         printf("Error saving game.\n");
@@ -90,11 +91,11 @@ void saveGame(GameState *state) {
     }
 
     fprintf(file, "Game ID: %d, Player 1: %s, Player 2: %s\n", state->gameID, state->globalPlayer1, state->globalPlayer2);
+    //nested loop to save the state of current field
     for (int i = 0; i < FIELD_HEIGHT; i++) {
         for (int j = 0; j < FIELD_WIDTH; j++) {
             fprintf(file, "%c", state->gameField[i][j]);
         }
-        fprintf(file, "\n");
     }
     fprintf(file, "\n");
 
@@ -138,28 +139,35 @@ void listAllSavedGames() {
     fclose(file);
 }
 
+//fun to get unique id from file
 void initializeGameID(GameState *state) {
+    //open the file if exists
     FILE *file = fopen(FILENAME, "r");
     if (!file) {
-        state->gameID = 1;  // No saved file, start from ID 1
+        //if not -> game id is 1
+        state->gameID = 1;
         return;
     }
 
+    //vars for id and line reading
     int maxID = 0, currentID;
     char line[100];
 
-    // Read all lines to find the maximum ID
+    //read all lines to find the maximum ID
     while (fgets(line, sizeof(line), file)) {
+        //find the first occurrence of id through 1 line
         if (strstr(line, "Game ID:")) {
+            //check the id and compare it with currentId
             sscanf(line, "Game ID: %d,", &currentID);
             if (currentID > maxID) {
                 maxID = currentID;
             }
         }
     }
-
+    //close the file
     fclose(file);
-    state->gameID = maxID + 1;  // Set gameID to the next available ID
+    //put new id into the state
+    state->gameID = maxID + 1;
 }
 
 void showSavedGameBoard() {

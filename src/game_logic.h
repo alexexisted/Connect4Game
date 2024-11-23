@@ -10,9 +10,9 @@
 // Function declarations
 void initializeField(GameState *state);
 void startGameLoop(GameState *state);
-void displayField(GameState *state);
-bool checkWinAndHighlight(char piece, GameState *state);
-bool checkAndHighlightDirection(int row, int col, int rowDir, int colDir, char piece, GameState *state);
+void displayField(const GameState *state);
+bool checkWinAndHighlight(char move, GameState *state);
+bool checkAndHighlightDirection(int row, int col, int rowDir, int colDir, char move, GameState *state);
 void playerTurn(char *playerName, char usersMove, GameState *state);
 
 #endif

@@ -3,21 +3,15 @@
 //
 #include "game_logic.h"
 #include <stdio.h>
-#include <stdbool.h>
-#include <string.h>
 
 #include "db_logic.h"
 #include "game_state.h"
 #include "navigation_logic.h"
 #include "utils_logic.h"
 
-// Global variables specific to game logic
-// char gameField[FIELD_HEIGHT][FIELD_WIDTH];
-// char globalPlayer1[MAX_NAME_LENGTH];
-// char globalPlayer2[MAX_NAME_LENGTH];
-
-// Initialize the field with empty spaces
+//init the field with empty spaces
 void initializeField(GameState *state) {
+    //matrix 6X7
     for (int i = 0; i < FIELD_HEIGHT; i++) {
         for (int j = 0; j < FIELD_WIDTH; j++) {
             state->gameField[i][j] = ' ';
@@ -25,7 +19,7 @@ void initializeField(GameState *state) {
     }
 }
 
-// Display the game board
+//display the game board
 void displayField(GameState *state) {
     for (int i = 0; i < FIELD_HEIGHT; i++) {
         for (int j = 0; j < FIELD_WIDTH; j++) {
@@ -43,16 +37,18 @@ void displayField(GameState *state) {
     printf("\n");
 }
 
-// Check if a player has won and highlight the winning combination if they have
-bool checkWinAndHighlight(char piece, GameState *state) {
+//check if some player has won and highlight the winning combination if they have
+bool checkWinAndHighlight(const char move, GameState *state) {
+    //iterate through entire field
     for (int row = 0; row < FIELD_HEIGHT; row++) {
         for (int col = 0; col < FIELD_WIDTH; col++) {
-            if (state->gameField[row][col] == piece) {
-                if (checkAndHighlightDirection(row, col, 0, 1, piece, state) || // Horizontal
-                    checkAndHighlightDirection(row, col, 1, 0, piece, state) || // Vertical
-                    checkAndHighlightDirection(row, col, 1, 1, piece, state) || // Diagonal down-right
-                    checkAndHighlightDirection(row, col, 1, -1, piece, state)) {
-                    // Diagonal down-left
+            if (state->gameField[row][col] == move) { //If the cell matches the player's symbol
+                                                    //we're starting to check winning combination from this cell
+                if (checkAndHighlightDirection(row, col, 0, 1, move, state) || //horizontal
+                    checkAndHighlightDirection(row, col, 1, 0, move, state) || //vertical
+                    checkAndHighlightDirection(row, col, 1, 1, move, state) || //diagonal down-right
+                    checkAndHighlightDirection(row, col, 1, -1, move, state))  //diagonal down-left
+                {
                     return true;
                 }
             }
@@ -61,32 +57,35 @@ bool checkWinAndHighlight(char piece, GameState *state) {
     return false;
 }
 
-// Check if a direction from (row, col) has WINNING_COUNT in a row and mark it if true
-
-bool checkAndHighlightDirection(int row, int col, int rowDir, int colDir, char piece, GameState *state) {
+//check if a direction from has WINNING_COUNT in a row and mark it if true
+bool checkAndHighlightDirection(int row, int col, int rowDir, int colDir, char move, GameState *state) {
+    //counter
     int count = 0;
-    int winningPositions[WINNING_COUNT][2]; // Array to store winning positions
+    //array to store winning positions
+    int winningPositions[WINNING_COUNT][2];
 
-    // Traverse in the specified direction
+    //go in the specified direction
     for (int i = 0; i < WINNING_COUNT; i++) {
+        //calculate the next cell coordinates using the direction vector(rowDir, colDir)
         int newRow = row + i * rowDir;
         int newCol = col + i * colDir;
 
-        // Check if we're within bounds and the piece matches
-        if (newRow >= 0 && newRow < FIELD_HEIGHT && newCol >= 0 && newCol < FIELD_WIDTH && state->gameField[newRow][newCol] ==
-            piece) {
+        //check if the new cell is within bounds and matches the player's symbol
+        if (newRow >= 0 && newRow < FIELD_HEIGHT && newCol >= 0 && newCol < FIELD_WIDTH &&
+            state->gameField[newRow][newCol] == move) {
             winningPositions[count][0] = newRow;
             winningPositions[count][1] = newCol;
             count++;
+            //if it does, record its coordinates in winningPositions and increment count
         } else {
             break;
         }
     }
 
-    // If we have a winning combination, highlight the positions
+    //if we have a winning combination, highlight the positions
     if (count == WINNING_COUNT) {
         for (int i = 0; i < WINNING_COUNT; i++) {
-            state->gameField[winningPositions[i][0]][winningPositions[i][1]] = 'Y'; // Highlight with 'Y'
+            state->gameField[winningPositions[i][0]][winningPositions[i][1]] = 'Y';
         }
         return true;
     }
@@ -94,8 +93,8 @@ bool checkAndHighlightDirection(int row, int col, int rowDir, int colDir, char p
     return false;
 }
 
-// Handle the player's turn
-void playerTurn(char *playerName, char usersMove, GameState *state) {
+//handle the player's turn
+void playerTurn(char *playerName, const char usersMove, GameState *state) {
     int column;
     bool validMove = false;
 
@@ -103,14 +102,17 @@ void playerTurn(char *playerName, char usersMove, GameState *state) {
         printf("%s, your turn. Enter a column (1-%d) or 0 to save: ", playerName, FIELD_WIDTH);
         scanf("%d", &column);
 
+        //if user decide to save the game
         if (column == 0) {
             saveGame(state);
-            return; // Return to continue game after saving
+            //return to continue game after saving
+            return;
         }
-
+        //if valid move
         if (column >= 1 && column <= FIELD_WIDTH) {
             validMove = placeUsersMove(column - 1, usersMove, state);
             if (validMove) {
+                //if placeUsersMove returns true we check if there are any winning combination
                 if (checkWinAndHighlight(usersMove, state)) {
                     displayField(state);
                     printf("%s wins!\n", playerName);
@@ -127,20 +129,25 @@ void playerTurn(char *playerName, char usersMove, GameState *state) {
         }
     }
 }
-// Main game loop to handle turns
+
+//main game loop
 void startGameLoop(GameState *state) {
-    if (!state->isResumingSavedGame) {  // Initialize only for new games
+    //initialize only for new games, not for resumed from db
+    if (!state->isResumingSavedGame) {
         initializeField(state);
     }
-    state->isResumingSavedGame = false;  // Reset flag after the first use
+    //reset flag after the use
+    state->isResumingSavedGame = false;
 
+    //display the field
     displayField(state);
 
     while (true) {
-        playerTurn(state->globalPlayer1, 'X', state);  // Player 1's turn
+        //game process
+        playerTurn(state->globalPlayer1, 'X', state);
         displayField(state);
 
-        playerTurn(state->globalPlayer2, 'O', state);  // Player 2's turn
+        playerTurn(state->globalPlayer2, 'O', state);
         displayField(state);
     }
 }

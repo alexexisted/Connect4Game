@@ -7,7 +7,7 @@
 
 #include "game_state.h"
 
-void initializeGameID();
+void initializeGameID(GameState *state);
 void saveGame(GameState *state);
 void listAllSavedGames();
 void loadSavedGame(GameState *state);

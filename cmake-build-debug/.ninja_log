@@ -28,3 +28,11 @@
 9	162	1732281639720430355	CMakeFiles/Connect4Game.dir/src/db_logic.c.o	4c681e8c0e4b939c
 123	252	1732281639834546891	CMakeFiles/Connect4Game.dir/src/navigation_logic.c.o	40a205ff56e0846b
 253	359	1732281639964421866	Connect4Game	f17fe314644515a
+23	6107	1732377645931588851	CMakeFiles/Connect4Game.dir/src/main.c.o	e66af30a0282594a
+24	6120	1732377645932042067	CMakeFiles/Connect4Game.dir/src/game_logic.c.o	72c45c31d646332
+24	6121	1732377645932763594	CMakeFiles/Connect4Game.dir/src/db_logic.c.o	4c681e8c0e4b939c
+6120	6206	1732377652028620888	CMakeFiles/Connect4Game.dir/src/utils_logic.c.o	63109a3cc165963a
+6107	6227	1732377652015624904	CMakeFiles/Connect4Game.dir/src/navigation_logic.c.o	40a205ff56e0846b
+6227	6915	1732377652135473482	Connect4Game	f17fe314644515a
+8	145	1732377954385858410	CMakeFiles/Connect4Game.dir/src/db_logic.c.o	4c681e8c0e4b939c
+145	277	1732377954523218659	Connect4Game	f17fe314644515a

@@ -5,7 +5,7 @@
 
 int main(void) {
     GameState state;
-    initializeGameID();
+    initializeGameID(&state);
     mainMenu(&state);
     return 0;
 }

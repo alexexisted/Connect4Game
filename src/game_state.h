@@ -15,6 +15,7 @@ typedef struct {
     char globalPlayer1[MAX_NAME_LENGTH];
     char globalPlayer2[MAX_NAME_LENGTH];
     bool isResumingSavedGame;
+    int gameID;
 
 } GameState;
 

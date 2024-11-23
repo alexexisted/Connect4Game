@@ -10,20 +10,21 @@
 #include "game_logic.h"
 #include "game_state.h"
 #define FILENAME "result.txt"
-int gameID;
 
 int getNextUniqueID() {
     FILE *file = fopen(FILENAME, "r");
     if (!file) return 1; // If file doesn't exist, start from ID 1
 
     int maxID = 0, currentID;
-    while (fscanf(file, "Game ID: %d,", &currentID) == 1) {
-        if (currentID > maxID) {
-            maxID = currentID;
+    char line[256]; // Buffer to hold each line of the file
+
+    while (fgets(line, sizeof(line), file)) {
+        // Check if the line contains "Game ID" and extract the ID
+        if (sscanf(line, "Game ID: %d,", &currentID) == 1) {
+            if (currentID > maxID) {
+                maxID = currentID;
+            }
         }
-        // Skip the rest of the line
-        char buffer[100];
-        fgets(buffer, sizeof(buffer), file);
     }
 
     fclose(file);
@@ -80,7 +81,7 @@ void loadSavedGame(GameState *state) {
 
 // Save the current game state to a file
 void saveGame(GameState *state) {
-    gameID = getNextUniqueID(); // Get the next unique ID
+    state->gameID = getNextUniqueID(); // Get the next unique ID
 
     FILE *file = fopen(FILENAME, "a");
     if (!file) {
@@ -88,7 +89,7 @@ void saveGame(GameState *state) {
         return;
     }
 
-    fprintf(file, "Game ID: %d, Player 1: %s, Player 2: %s\n", gameID, state->globalPlayer1, state->globalPlayer2);
+    fprintf(file, "Game ID: %d, Player 1: %s, Player 2: %s\n", state->gameID, state->globalPlayer1, state->globalPlayer2);
     for (int i = 0; i < FIELD_HEIGHT; i++) {
         for (int j = 0; j < FIELD_WIDTH; j++) {
             fprintf(file, "%c", state->gameField[i][j]);
@@ -97,7 +98,7 @@ void saveGame(GameState *state) {
     }
     fprintf(file, "\n");
 
-    printf("Game saved with ID: %d\n", gameID);
+    printf("Game saved with ID: %d\n", state->gameID);
     fclose(file);
 }
 
@@ -137,10 +138,10 @@ void listAllSavedGames() {
     fclose(file);
 }
 
-void initializeGameID() {
+void initializeGameID(GameState *state) {
     FILE *file = fopen(FILENAME, "r");
     if (!file) {
-        gameID = 1;  // No saved file, start from ID 1
+        state->gameID = 1;  // No saved file, start from ID 1
         return;
     }
 
@@ -158,7 +159,7 @@ void initializeGameID() {
     }
 
     fclose(file);
-    gameID = maxID + 1;  // Set gameID to the next available ID
+    state->gameID = maxID + 1;  // Set gameID to the next available ID
 }
 
 void showSavedGameBoard() {

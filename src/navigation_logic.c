@@ -50,8 +50,9 @@ void mainMenu(GameState *state) {
     }
 }
 
-
+//ask to choose new game or return to menu
 void promptForNewGame(GameState *state) {
+    //check input
     char tempOption[1];
     printf("\nGame Over! Would you like to:\n");
     printf("1 - Start a new game\n");
@@ -72,6 +73,7 @@ void promptForNewGame(GameState *state) {
     }
 }
 
+//show list of games
 void listGamesClicked(GameState *state) {
     printf("1 - List all saved games\n");
     printf("2 - List all saved games for a particular player\n");

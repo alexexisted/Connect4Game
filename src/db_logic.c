@@ -4,7 +4,9 @@
 
 #include "db_logic.h"
 
+#include <ctype.h>
 #include <stdio.h>
+#include <stdlib.h>
 #include <string.h>
 
 #include "game_logic.h"
@@ -48,25 +50,26 @@ void loadSavedGame(GameState *state) {
     while (fgets(line, sizeof(line), file)) {
         if (strstr(line, "Game ID:")) {
             int currentID;
-            sscanf(line, "Game ID: %d, Player 1: %s, Player 2: %s", &currentID, state->globalPlayer1, state->globalPlayer2);
+            sscanf(line, "Game ID: %d, Player 1: %s, Player 2: %s", &currentID, state->globalPlayer1,
+                   state->globalPlayer2);
             if (currentID == id) {
                 gameFound = true;
 
-                // Read the board and populate gameField
+                //read the board and populate game field
                 for (int i = 0; i < FIELD_HEIGHT; i++) {
                     if (fgets(line, sizeof(line), file)) {
                         for (int j = 0; j < FIELD_WIDTH; j++) {
-                            state->gameField[i][j] = line[j];  // Copy characters into gameField
+                            state->gameField[i][j] = line[j]; //copy characters into gameField
                         }
                     }
                 }
 
                 printf("Game loaded successfully!\n");
                 printf("Player 1: %s, Player 2: %s\n", state->globalPlayer1, state->globalPlayer2);
-                displayField(state);  // Show the loaded game board
+                displayField(state); //show the loaded game board
 
-                state->isResumingSavedGame = true;  // Set the flag to prevent reinitialization
-                startGameLoop(state);  // Start the game from the loaded state
+                state->isResumingSavedGame = true; //set the flag to prevent reinitialization
+                startGameLoop(state); //start the game from the loaded state
                 break;
             }
         }
@@ -90,12 +93,14 @@ void saveGame(GameState *state) {
         return;
     }
 
-    fprintf(file, "Game ID: %d, Player 1: %s, Player 2: %s\n", state->gameID, state->globalPlayer1, state->globalPlayer2);
+    fprintf(file, "Game ID: %d, Player 1: %s, Player 2: %s\n", state->gameID, state->globalPlayer1,
+            state->globalPlayer2);
     //nested loop to save the state of current field
     for (int i = 0; i < FIELD_HEIGHT; i++) {
         for (int j = 0; j < FIELD_WIDTH; j++) {
             fprintf(file, "%c", state->gameField[i][j]);
         }
+        fprintf(file, "\n");
     }
     fprintf(file, "\n");
 
@@ -117,10 +122,10 @@ void listAllSavedGames() {
             int currentID;
             char player1[MAX_NAME_LENGTH], player2[MAX_NAME_LENGTH];
 
-            // Parse the current line for ID and player names
+            //parse the current line for ID and player names
             sscanf(line, "Game ID: %d, Player 1: %s, Player 2: %s", &currentID, player1, player2);
 
-            // Count free cells in the following lines (the board)
+            //count free cells in the following lines (the board)
             for (int i = 0; i < FIELD_HEIGHT; i++) {
                 if (fgets(line, sizeof(line), file)) {
                     for (int j = 0; j < FIELD_WIDTH; j++) {
@@ -131,7 +136,7 @@ void listAllSavedGames() {
                 }
             }
 
-            // Print the game details
+            //print the game details
             printf("ID: %d, Player 1: %s, Player 2: %s, Free cells: %d\n", currentID, player1, player2, freeCells);
         }
     }
@@ -172,39 +177,45 @@ void initializeGameID(GameState *state) {
 
 void showSavedGameBoard() {
     printf("Enter game ID: ");
-    int id;
-    scanf("%d", &id);
+    char tempId[10];
+    scanf("%s", tempId);
 
-    FILE *file = fopen(FILENAME, "r");
-    if (!file) {
-        printf("No saved games found.\n");
-        return;
-    }
+    if (strlen(tempId) == 1 && isdigit(tempId[0])) {
+        int id = atoi(tempId);
 
-    char line[100];
-    bool gameFound = false;
-    while (fgets(line, sizeof(line), file)) {
-        if (strstr(line, "Game ID:")) {
-            int currentID;
-            sscanf(line, "Game ID: %d,", &currentID);
-            if (currentID == id) {
-                gameFound = true;
-                printf("%s", line); // Print game metadata
-                for (int i = 0; i < FIELD_HEIGHT; i++) {
-                    if (fgets(line, sizeof(line), file)) {
-                        printf("%s", line); // Print the board row
+        FILE *file = fopen(FILENAME, "r");
+        if (!file) {
+            printf("No saved games found.\n");
+            return;
+        }
+        char line[100];
+        bool gameFound = false;
+        while (fgets(line, sizeof(line), file)) {
+            if (strstr(line, "Game ID:")) {
+                int currentID;
+                sscanf(line, "Game ID: %d,", &currentID);
+                if (currentID == id) {
+                    gameFound = true;
+                    printf("%s", line); // Print game metadata
+                    for (int i = 0; i < FIELD_HEIGHT; i++) {
+                        if (fgets(line, sizeof(line), file)) {
+                            printf("%s", line); // Print the board row
+                        }
                     }
+                    break;
                 }
-                break;
             }
         }
-    }
 
-    if (!gameFound) {
-        printf("Game with ID %d not found.\n", id);
-    }
 
-    fclose(file);
+        if (!gameFound) {
+            printf("Game with ID %d not found.\n", id);
+        }
+
+        fclose(file);
+    } else {
+        printf("Enter valid value!");
+    }
 }
 
 void listGamesByPlayer() {
@@ -221,7 +232,7 @@ void listGamesByPlayer() {
     char line[100];
     while (fgets(line, sizeof(line), file)) {
         if (strstr(line, playerName)) {
-            printf("%s", line); // Print matching games
+            printf("%s", line); //print matching games
         }
     }
 

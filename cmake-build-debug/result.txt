@@ -1,26 +1,10 @@
-Game ID: 1, Player 1: ert reterge, Player 2: wefwefwf
-       
-       
- X     
-OXO    
-XXO    
-XOOX   
 
-Game ID: 2, Player 1: rgrg rgr, Player 2: jopa2
+
+Game ID: 1, Player 1: dfg, Player 2: sdfghj
        
        
        
-O      
 X      
-XO     
-
-
-
-Game ID: 3, Player 1: fd, Player 2: dfdf
-       
-       
-       
-       
-       
-XOXOX  
+X O    
+X OO  X
 

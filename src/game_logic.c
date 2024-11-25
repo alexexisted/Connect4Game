@@ -113,12 +113,14 @@ void playerTurn(char *playerName, const char usersMove, GameState *state) {
             validMove = placeUsersMove(column - 1, usersMove, state);
             if (validMove) {
                 //if placeUsersMove returns true we check if there are any winning combination
-                if (checkWinAndHighlight(usersMove, state)) {
+                if (checkWinAndHighlight(usersMove, state)) { //if win
+                    //display updated field with highlighted row
                     displayField(state);
                     printf("%s wins!\n", playerName);
-                    promptForNewGame(state);; // End the game if there's a winner
+                    promptForNewGame(state);; //end the game if there's a winner
                 }
                 if (isBoardFull(state)) {
+                    //if board is full
                     displayField(state);
                     printf("The board is full! It's a tie.\n");
                     promptForNewGame(state);
